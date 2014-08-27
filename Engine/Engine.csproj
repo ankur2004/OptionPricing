@@ -40,6 +40,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Core\MonteCarlo.cs" />
+    <Compile Include="Core\Random.cs" />
+    <Compile Include="Core\Task.cs" />
     <Compile Include="European\BlackScholes.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
