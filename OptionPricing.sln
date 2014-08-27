@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.30501.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Engine", "Engine\Engine.csproj", "{05324E4F-1E06-4676-A0D2-66D20C22B21B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OptionPricing.Engine", "Engine\OptionPricing.Engine.csproj", "{05324E4F-1E06-4676-A0D2-66D20C22B21B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Engine.Test", "Engine.Test\Engine.Test.csproj", "{21080B9E-DEB2-4084-8D95-AF2068229819}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OptionPricing.Engine.Test", "Engine.Test\OptionPricing.Engine.Test.csproj", "{21080B9E-DEB2-4084-8D95-AF2068229819}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
