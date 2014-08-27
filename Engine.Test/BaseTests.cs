@@ -1,7 +1,6 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Engine.Test
+namespace OptionPricing.Engine.Test
 {
     [TestClass]
     public class BaseTests
