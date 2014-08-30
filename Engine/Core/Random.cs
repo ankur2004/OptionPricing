@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MathNet.Numerics.Random;
+
 
 namespace OptionPricing.Engine.Core
 {
@@ -16,14 +18,10 @@ namespace OptionPricing.Engine.Core
         /// <returns></returns>
         public static List<Double> GetRandomNumers(int number)
         {
-            var rnd = new System.Random();
             var rndNumbers = new List<Double>();
+            var rndMersenneTwister = new MersenneTwister(true);
 
-            for (int i = 0; i < number; i++)
-            {
-                rndNumbers.Add(rnd.NextDouble());
-            }
-
+            rndNumbers.AddRange(rndMersenneTwister.NextDoubles(number));
             return rndNumbers;
         }
     }
