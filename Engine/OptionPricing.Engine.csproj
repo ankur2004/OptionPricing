@@ -47,6 +47,8 @@
     <Compile Include="Core\Random.cs" />
     <Compile Include="Core\Task.cs" />
     <Compile Include="European\BlackScholes.cs" />
+    <Compile Include="European\EuropeanOption.cs" />
+    <Compile Include="IOptionPricer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

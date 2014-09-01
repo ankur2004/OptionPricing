@@ -53,6 +53,12 @@
     <Compile Include="BaseTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Engine\OptionPricing.Engine.csproj">
+      <Project>{05324e4f-1e06-4676-a0d2-66d20c22b21b}</Project>
+      <Name>OptionPricing.Engine</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>
