@@ -6,16 +6,15 @@ using System.Threading.Tasks;
 
 namespace OptionPricing.Engine.European
 {
-    public class EuropeanOption
+    public class EuropeanOption : Option
     {
-        public double Time { get; set; }
 
-        public double Rate { get; set; }
-
-        public double StandardDeviation { get; set; }
-
-        public double ExercisePrice { get; set; }
-
-        public double StockPrice { get; set; }
+        public override OptionType Type
+        {
+            get
+            {
+               return OptionType.European;
+            }
+        }
     }
 }
