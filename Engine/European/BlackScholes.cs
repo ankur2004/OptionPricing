@@ -9,31 +9,9 @@ namespace OptionPricing.Engine.European
 {
     public class BlackScholes : IOptionPricer
     {
-        private double put, call;
+        public double Put { get; protected set; }
 
-        public double Put
-        {
-            get
-            {
-                return put;
-            }
-            set
-            {
-                put = value;
-            }
-        }
-
-        public double Call
-        {
-            get
-            {
-                return call;
-            }
-            set
-            {
-                call = value;
-            }
-        }
+        public double Call { get; protected set; }
 
         public void CalculatePrice(EuropeanOption option)
         {
@@ -41,12 +19,10 @@ namespace OptionPricing.Engine.European
             var d2 = d1 - option.StandardDeviation * Math.Sqrt(option.Time);
            
             Normal n = new Normal();
-            var ND1 = n.CumulativeDistribution(d1);
-            var ND2 = n.CumulativeDistribution(d2);
+           
+            Call = option.StockPrice * n.CumulativeDistribution(d1) - option.ExercisePrice * Math.Exp(-option.Rate * option.Time) * n.CumulativeDistribution(d2);
 
-            call = option.StockPrice * n.CumulativeDistribution(d1) - option.ExercisePrice * Math.Exp(-option.Rate * option.Time) * n.CumulativeDistribution(d2);
-
-            put = option.ExercisePrice * Math.Exp(-option.Rate * option.Time) * n.CumulativeDistribution(-d2) - option.StockPrice * n.CumulativeDistribution(d1);
+            Put = option.ExercisePrice * Math.Exp(-option.Rate * option.Time) * n.CumulativeDistribution(-d2) - option.StockPrice * n.CumulativeDistribution(d1);
             
         }
 

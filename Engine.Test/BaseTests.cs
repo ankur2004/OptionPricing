@@ -22,7 +22,8 @@ namespace OptionPricing.Engine.Test
             BlackScholes blackScholes = new BlackScholes();
             blackScholes.CalculatePrice(testOption);
 
-            Assert.AreEqual<double>(Math.Round(blackScholes.Call,2), 3.67);
+            Assert.AreEqual(blackScholes.Call, 3.67, 2);
+            
         }
     }
 }
