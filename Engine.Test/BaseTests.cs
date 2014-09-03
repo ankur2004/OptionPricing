@@ -10,7 +10,7 @@ namespace OptionPricing.Engine.Test
         [TestMethod]
         public void TestBlackScholesEuropeanCall()
         {
-            EuropeanOption testOption = new EuropeanOption() 
+            EuropeanOption testOption = new EuropeanOption(OptionType.Call) 
             {
                 Time = 0.5,
                 Rate = 0.09, 
@@ -19,10 +19,10 @@ namespace OptionPricing.Engine.Test
                 StandardDeviation = 0.3
             };
 
-            BlackScholes blackScholes = new BlackScholes();
-            blackScholes.CalculatePrice(testOption);
+            BlackScholes blackScholes = new BlackScholes(testOption);
+            blackScholes.CalculateOptionPrice();
 
-            Assert.AreEqual(blackScholes.Call, 3.67, 2);
+            Assert.AreEqual(blackScholes.Price, 3.67, 2);
             
         }
     }

@@ -8,7 +8,10 @@ namespace OptionPricing.Engine
 {
     public abstract class Option
     {
-        public abstract OptionType Type { get; } 
+       
+        public abstract OptionStyle OptionStyle { get; }
+
+        public OptionType OptionType { get; set; }
 
         public double Time { get; set; }
 

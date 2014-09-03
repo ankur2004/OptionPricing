@@ -9,9 +9,8 @@ namespace OptionPricing.Engine
 {
     public interface IOptionPricer
     {
-        double Put { get;  }
-        double Call { get; }
+        double Price { get;  }
 
-        void CalculatePrice(EuropeanOption option);
+        void CalculateOptionPrice();
     }
 }
