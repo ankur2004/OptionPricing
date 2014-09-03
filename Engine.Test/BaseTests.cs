@@ -19,8 +19,8 @@ namespace OptionPricing.Engine.Test
                 StandardDeviation = 0.3
             };
 
-            BlackScholes blackScholes = new BlackScholes();
-            blackScholes.CalculatePrice(testOption);
+            BlackScholes blackScholes = new BlackScholes(testOption);
+            blackScholes.CalculateOptionPrice();
 
             Assert.AreEqual(blackScholes.Call, 3.67, 2);
             

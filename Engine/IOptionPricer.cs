@@ -12,6 +12,6 @@ namespace OptionPricing.Engine
         double Put { get;  }
         double Call { get; }
 
-        void CalculatePrice(EuropeanOption option);
+        void CalculateOptionPrice();
     }
 }
