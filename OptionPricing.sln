@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OptionPricing.Engine", "Eng
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OptionPricing.Engine.Test", "Engine.Test\OptionPricing.Engine.Test.csproj", "{21080B9E-DEB2-4084-8D95-AF2068229819}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OptionPricing.View", "OptionPricing.View\OptionPricing.View.csproj", "{18D761AB-3AC2-4C0A-8863-285C675AD298}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{21080B9E-DEB2-4084-8D95-AF2068229819}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{21080B9E-DEB2-4084-8D95-AF2068229819}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{21080B9E-DEB2-4084-8D95-AF2068229819}.Release|Any CPU.Build.0 = Release|Any CPU
+		{18D761AB-3AC2-4C0A-8863-285C675AD298}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{18D761AB-3AC2-4C0A-8863-285C675AD298}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{18D761AB-3AC2-4C0A-8863-285C675AD298}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{18D761AB-3AC2-4C0A-8863-285C675AD298}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
