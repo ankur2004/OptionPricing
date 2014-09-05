@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using OptionPricing.Engine.Base;
 
 namespace OptionPricing.Engine.European
 {
@@ -11,12 +12,10 @@ namespace OptionPricing.Engine.European
 
         public EuropeanOption(OptionType type)
         {
-            Type = type;
+            OptionType = type;
         }
 
-        public OptionType Type {get; protected set;}
-
-        public override OptionStyle OptionStyle
+        public new OptionStyle OptionStyle
         {
             get
             {

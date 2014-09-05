@@ -44,16 +44,20 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="American\AmericanOption.cs" />
+    <Compile Include="Base\IGreeks.cs" />
+    <Compile Include="Base\IOption.cs" />
+    <Compile Include="Base\Utils.cs" />
     <Compile Include="Core\MonteCarlo.cs" />
     <Compile Include="Core\Random.cs" />
     <Compile Include="Core\Task.cs" />
     <Compile Include="Core\Tree.cs" />
     <Compile Include="European\BlackScholes.cs" />
     <Compile Include="European\EuropeanOption.cs" />
-    <Compile Include="Option.cs" />
-    <Compile Include="IOptionPricer.cs" />
+    <Compile Include="Base\Option.cs" />
+    <Compile Include="Base\IOptionPricer.cs" />
+    <Compile Include="Pricer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Utils.cs" />
+    <Compile Include="Base\Enums.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

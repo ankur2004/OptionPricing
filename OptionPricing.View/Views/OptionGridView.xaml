@@ -18,11 +18,11 @@
         <DataGrid VerticalContentAlignment="Center" VerticalAlignment="Center" Grid.Row="1" AutoGenerateColumns="False" CanUserAddRows="True" CanUserDeleteRows="True" CanUserReorderColumns="True" ItemsSource="{Binding Options}">
             <DataGrid.Columns>
                 <DataGridCheckBoxColumn Header="Select"></DataGridCheckBoxColumn>
-                <DataGridTextColumn Header="Stock Price" IsReadOnly="False" Binding="{Binding Path=StockPrice, Mode=TwoWay}"></DataGridTextColumn>
+                <DataGridTextColumn Header="Stock Price" IsReadOnly="False" Binding="{Binding Path=SpotPrice, Mode=TwoWay}"></DataGridTextColumn>
                 <DataGridTextColumn Header="Exercise Price" IsReadOnly="False" Binding="{Binding Path=ExercisePrice, Mode=TwoWay}"></DataGridTextColumn>
                 <DataGridTextColumn Header="Rate (%)" IsReadOnly="False" Binding="{Binding Path=Rate, Mode=TwoWay}"></DataGridTextColumn>
                 <DataGridTextColumn Header="Volatility (%)" IsReadOnly="False" Binding="{Binding Path=Volatility, Mode=TwoWay}"></DataGridTextColumn>
-                <DataGridTextColumn Header="Time To Maturity" IsReadOnly="False" Binding="{Binding Path=TimeToMaturity, Mode=TwoWay}"></DataGridTextColumn>
+                <DataGridTextColumn Header="Time To Maturity" IsReadOnly="False" Binding="{Binding Path=Maturity, Mode=TwoWay}"></DataGridTextColumn>
                 <DataGridTextColumn Header="Option Price" IsReadOnly="True" Binding="{Binding Path=OptionPrice}"></DataGridTextColumn>
                 <DataGridTemplateColumn>
                     <DataGridTemplateColumn.Header>Details</DataGridTemplateColumn.Header>

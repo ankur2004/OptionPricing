@@ -1,41 +1,37 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using MathNet.Numerics.Distributions;
+using OptionPricing.Engine.Base;
 
 namespace OptionPricing.Engine.European
 {
     public class BlackScholes : IOptionPricer
     {
-        private Option option;
+        private IOption option;
         double d1, d2;
-        Normal normalDist;
 
-        public BlackScholes(Option option)
+        public BlackScholes(IOption option)
         {
+            // consistency check
+            if (option.OptionStyle != OptionStyle.European)
+            {
+                throw new ArgumentException("Black-Scholes only supports European Options");
+            }
             this.option = option;
-            d1 = (Math.Log(option.StockPrice / option.ExercisePrice) + (option.Rate + (Math.Pow(option.StandardDeviation, 2) / 2)) * option.Time) / (option.StandardDeviation * Math.Sqrt(option.Time));
-            d2 = d1 - option.StandardDeviation * Math.Sqrt(option.Time);
-
-            normalDist = new Normal();
+            d1 = (Math.Log(option.SpotPrice / option.ExercisePrice) + (option.Rate + (Math.Pow(option.Volatility, 2) / 2)) * option.Maturity) / (option.Volatility * Math.Sqrt(option.Maturity));
+            d2 = d1 - option.Volatility * Math.Sqrt(option.Maturity);
         }
 
         public double Price { get; protected set; }
-
       
         public void CalculateOptionPrice()
         {
             switch (option.OptionType)
             {
                 case OptionType.Call:
-                    Price = option.StockPrice * normalDist.CumulativeDistribution(d1) - option.ExercisePrice * Math.Exp(-option.Rate * option.Time) * normalDist.CumulativeDistribution(d2);
+                    Price = option.SpotPrice * Utils.N(d1) - option.ExercisePrice * Math.Exp(-option.Rate * option.Maturity) * Utils.N(d2);
                     break;
+
                 case OptionType.Put:
-                    Price = option.ExercisePrice * Math.Exp(-option.Rate * option.Time) * normalDist.CumulativeDistribution(-d2) - option.StockPrice * normalDist.CumulativeDistribution(d1);
-                    break;
-                default:
+                    Price = option.ExercisePrice * Math.Exp(-option.Rate * option.Maturity) * Utils.N(-d2) - option.SpotPrice * Utils.N(d1);
                     break;
             }
         }
@@ -49,12 +45,10 @@ namespace OptionPricing.Engine.European
             switch (option.OptionType)
             {
                 case OptionType.Call:
-                    result = normalDist.CumulativeDistribution(d1);
+                    result = Utils.N(d1);
                     break;
                 case OptionType.Put:
-                    result = normalDist.CumulativeDistribution(d1) - 1;
-                    break;
-                default:
+                    result = Utils.N(d1) - 1;
                     break;
             }
             return result;
@@ -64,12 +58,12 @@ namespace OptionPricing.Engine.European
 
         public double GetGamma()
         {
-            return normalDist.InverseCumulativeDistribution(d1)/(option.StockPrice*option.StandardDeviation*Math.Sqrt(option.Time));
+            return Utils.NInv(d1) / (option.SpotPrice * option.Volatility * Math.Sqrt(option.Maturity));
         }
 
         public double GetVega()
         {
-            return normalDist.InverseCumulativeDistribution(d1) * option.StockPrice * Math.Sqrt(option.Time);
+            return Utils.NInv(d1) * option.SpotPrice * Math.Sqrt(option.Maturity);
         }
 
         public double GethTheta()
@@ -79,14 +73,12 @@ namespace OptionPricing.Engine.European
             switch (option.OptionType)
             {
                 case OptionType.Call:
-                    result = (-option.StockPrice * normalDist.InverseCumulativeDistribution(d1) * option.StandardDeviation) / (2 * Math.Sqrt(option.Time)) - 
-                                option.ExercisePrice * option.Rate * Math.Exp(-option.Rate * option.Time) * normalDist.InverseCumulativeDistribution(d2);
+                    result = (-option.SpotPrice * Utils.NInv(d1) * option.Volatility) / (2 * Math.Sqrt(option.Maturity)) -
+                                option.ExercisePrice * option.Rate * Math.Exp(-option.Rate * option.Maturity) * Utils.NInv(d2);
                     break;
                 case OptionType.Put:
-                    result = (-option.StockPrice * normalDist.InverseCumulativeDistribution(d1) * option.StandardDeviation) / (2 * Math.Sqrt(option.Time)) +
-                                option.ExercisePrice * option.Rate * Math.Exp(-option.Rate * option.Time) * normalDist.InverseCumulativeDistribution(-d2);
-                    break;
-                default:
+                    result = (-option.SpotPrice * Utils.NInv(d1) * option.Volatility) / (2 * Math.Sqrt(option.Maturity)) +
+                                option.ExercisePrice * option.Rate * Math.Exp(-option.Rate * option.Maturity) * Utils.NInv(-d2);
                     break;
             }
             return result;
@@ -99,12 +91,10 @@ namespace OptionPricing.Engine.European
             switch (option.OptionType)
             {
                 case OptionType.Call:
-                    result = option.ExercisePrice * option.Time * Math.Exp(-option.Rate * option.Time) * normalDist.InverseCumulativeDistribution(d2);
+                    result = option.ExercisePrice * option.Maturity * Math.Exp(-option.Rate * option.Maturity) * Utils.NInv(d2);
                     break;
                 case OptionType.Put:
-                    result = -option.ExercisePrice * option.Time * Math.Exp(-option.Rate * option.Time) * normalDist.InverseCumulativeDistribution(-d2);
-                    break;
-                default:
+                    result = -option.ExercisePrice * option.Maturity * Math.Exp(-option.Rate * option.Maturity) * Utils.NInv(-d2);
                     break;
             }
 

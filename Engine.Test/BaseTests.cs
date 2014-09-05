@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using OptionPricing.Engine.Base;
 using OptionPricing.Engine.European;
 using System;
 
@@ -12,18 +13,17 @@ namespace OptionPricing.Engine.Test
         {
             EuropeanOption testOption = new EuropeanOption(OptionType.Call) 
             {
-                Time = 0.5,
+                Maturity = 0.5,
                 Rate = 0.09, 
-                StockPrice = 39.03, 
+                SpotPrice = 39.03, 
                 ExercisePrice = 40, 
-                StandardDeviation = 0.3
+                Volatility = 0.3
             };
 
-            BlackScholes blackScholes = new BlackScholes(testOption);
+            IOptionPricer blackScholes = new BlackScholes(testOption);
             blackScholes.CalculateOptionPrice();
 
-            Assert.AreEqual(blackScholes.Price, 3.67, 2);
-            
+            Assert.AreEqual(3.67, blackScholes.Price, 0.01, "Option Price");            
         }
     }
 }

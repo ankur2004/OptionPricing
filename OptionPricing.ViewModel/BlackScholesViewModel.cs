@@ -1,4 +1,6 @@
-﻿using OptionPricing.Engine.European;
+﻿using OptionPricing.Engine;
+using OptionPricing.Engine.Base;
+using OptionPricing.Engine.European;
 using OptionPricing.ViewModel.Commands;
 using OptionPricing.ViewModel.Models;
 using System;
@@ -13,15 +15,15 @@ namespace OptionPricing.ViewModel
 {
     public class BlackScholesViewModel : ViewModelBase
     {
-        ObservableCollection<Option> options;
+        ObservableCollection<OptionVM> options;
         public BlackScholesViewModel()
         {
-            options = new ObservableCollection<Option>()
+            options = new ObservableCollection<OptionVM>()
             {
-                new Option() {
-                    TimeToMaturity = 0.5,
+                new OptionVM() {
+                    Maturity = 0.5,
                     Rate = 0.09, 
-                    StockPrice = 39.03, 
+                    SpotPrice = 39.03, 
                     ExercisePrice = 40.0, 
                     Volatility = 0.3
                 }
@@ -29,7 +31,7 @@ namespace OptionPricing.ViewModel
 
         }
 
-        public ObservableCollection<Option> Options
+        public ObservableCollection<OptionVM> Options
         {
             get
             {
@@ -61,7 +63,9 @@ namespace OptionPricing.ViewModel
 
             foreach (var option in Options)
             {
-                
+                IOptionPricer pricer = new Pricer(option);
+                pricer.CalculateOptionPrice();
+                option.OptionPrice = pricer.Price;
             }
             return true;
         }
