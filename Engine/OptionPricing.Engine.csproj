@@ -43,9 +43,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="American\AmericanOption.cs" />
     <Compile Include="Core\MonteCarlo.cs" />
     <Compile Include="Core\Random.cs" />
     <Compile Include="Core\Task.cs" />
+    <Compile Include="Core\Tree.cs" />
     <Compile Include="European\BlackScholes.cs" />
     <Compile Include="European\EuropeanOption.cs" />
     <Compile Include="Option.cs" />
@@ -56,9 +58,7 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="American\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
