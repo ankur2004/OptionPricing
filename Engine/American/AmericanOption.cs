@@ -9,12 +9,9 @@ namespace OptionPricing.Engine.American
     public class AmericanOption : Option
     {
 
-        public override OptionType Type
+        public override OptionStyle OptionStyle
         {
-            get
-            {
-               return OptionType.American;
-            }
+            get { return OptionStyle.American; }
         }
     }
 }
