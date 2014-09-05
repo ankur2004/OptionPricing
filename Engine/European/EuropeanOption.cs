@@ -9,11 +9,18 @@ namespace OptionPricing.Engine.European
     public class EuropeanOption : Option
     {
 
-        public override OptionType Type
+        public EuropeanOption(OptionType type)
+        {
+            Type = type;
+        }
+
+        public OptionType Type {get; protected set;}
+
+        public override OptionStyle OptionStyle
         {
             get
             {
-               return OptionType.European;
+                return OptionStyle.European;
             }
         }
     }

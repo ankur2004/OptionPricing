@@ -6,9 +6,15 @@ using System.Threading.Tasks;
 
 namespace OptionPricing.Engine
 {
-    public enum OptionType
+    public enum OptionStyle
     {
         European,
         American
+    }
+
+    public enum OptionType
+    {
+        Call,
+        Put
     }
 }
