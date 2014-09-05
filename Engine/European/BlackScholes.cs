@@ -15,6 +15,7 @@ namespace OptionPricing.Engine.European
             {
                 throw new ArgumentException("Black-Scholes only supports European Options");
             }
+
             this.option = option;
             d1 = (Math.Log(option.SpotPrice / option.ExercisePrice) + (option.Rate + (Math.Pow(option.Volatility, 2) / 2)) * option.Maturity) / (option.Volatility * Math.Sqrt(option.Maturity));
             d2 = d1 - option.Volatility * Math.Sqrt(option.Maturity);
