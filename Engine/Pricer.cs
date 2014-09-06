@@ -4,29 +4,30 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using OptionPricing.Engine.Base;
+using OptionPricing.Engine.European;
 
-namespace OptionPricing.Engine.Core
+namespace OptionPricing.Engine
 {
-    public class MonteCarlo : IOptionPricer
+    public class Pricer : IOptionPricer
     {
-        private const int NUM_SIMULATIONS = 100000;
-        private IOption option;
         private IOptionPricer pricer;
 
-        public MonteCarlo(IOption option)
+        public Pricer(IOption option)
         {
-            this.option = option;
             if (option.OptionStyle == OptionStyle.European)
             {
-                pricer = new MonteCarloNonPathDependent(option, 10000);
+                pricer = new BlackScholes(option);
             }
         }
 
-        public double Price { get; private set; }
+        public double Price
+        {
+            get { return pricer.Price; }
+        }
+
         public void CalculateOptionPrice()
         {
             pricer.CalculateOptionPrice();
-            Price = pricer.Price;
         }
     }
 }

@@ -48,6 +48,8 @@
     <Compile Include="Base\IOption.cs" />
     <Compile Include="Base\Utils.cs" />
     <Compile Include="Core\MonteCarlo.cs" />
+    <Compile Include="Core\MonteCarloNonPathDependent.cs" />
+    <Compile Include="Core\MonteCarloPathDependent.cs" />
     <Compile Include="Core\Random.cs" />
     <Compile Include="Core\Task.cs" />
     <Compile Include="Core\Tree.cs" />
@@ -55,6 +57,7 @@
     <Compile Include="European\EuropeanOption.cs" />
     <Compile Include="Base\Option.cs" />
     <Compile Include="Base\IOptionPricer.cs" />
+    <Compile Include="European\Payoffs.cs" />
     <Compile Include="Pricer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Base\Enums.cs" />
