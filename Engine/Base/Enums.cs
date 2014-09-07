@@ -11,4 +11,14 @@
         Call,
         Put
     }
+
+    public enum OptionInputs
+    {
+        Spot,
+        Strike,
+        Maturity,
+        Time,
+        Rate,
+        Volatility
+    }
 }

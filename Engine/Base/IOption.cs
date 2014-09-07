@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 
 namespace OptionPricing.Engine.Base
@@ -15,5 +16,7 @@ namespace OptionPricing.Engine.Base
         double Volatility { get; set; }
         double ExercisePrice { get; set; }
         double SpotPrice { get; set; }
+        IOption Clone();
+        IOption CloneWithBump(OptionInputs input, double amount);
     }
 }
