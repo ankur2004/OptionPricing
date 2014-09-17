@@ -24,7 +24,7 @@ namespace OptionPricing.Engine.Core
 
         #region IOptionPricer
         public double Price { get; private set; }
-        public void CalculateOptionPrice()
+        public void CalculateOptionPrice(IOption option)
         {
             switch (option.OptionType)
             {
@@ -40,7 +40,7 @@ namespace OptionPricing.Engine.Core
             for (int i = 0; i < numberSimulations; i++)
             {
                 FwdValue = CalculateTerminalValue();
-                var simPrice = CalculatePayoff(FwdValue, option.ExercisePrice);
+                var simPrice = CalculatePayoff(FwdValue, option.ExercisePrice.Value);
                 price += simPrice;
             }
 
@@ -52,10 +52,10 @@ namespace OptionPricing.Engine.Core
         private double CalculateTerminalValue()
         {
             var rnd = Random.GetRandomNumber();
-            var drift = (option.Rate - 0.5*Math.Pow(option.Volatility, 2))*option.Maturity;
-            var diffusion = option.Volatility*Math.Sqrt(option.Maturity);
+            var drift = (option.Rate.Value - 0.5*Math.Pow(option.Volatility.Value, 2))*option.Maturity.Value;
+            var diffusion = option.Volatility.Value*Math.Sqrt(option.Maturity.Value);
 
-            return option.SpotPrice*Math.Exp(drift + diffusion* Random.GetStdNormalRandomNumber());
+            return option.SpotPrice.Value*Math.Exp(drift + diffusion* Random.GetStdNormalRandomNumber());
         }
     }
 }

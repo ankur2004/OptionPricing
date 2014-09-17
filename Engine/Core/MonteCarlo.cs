@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using OptionPricing.Engine.Base;
+﻿using OptionPricing.Engine.Base;
 
 namespace OptionPricing.Engine.Core
 {
@@ -13,20 +8,14 @@ namespace OptionPricing.Engine.Core
         private IOption option;
         private IOptionPricer pricer;
 
-        public MonteCarlo(IOption option)
+
+        public void CalculateOptionPrice(IOption option)
         {
-            this.option = option;
             if (option.OptionStyle == OptionStyle.European)
             {
                 pricer = new MonteCarloNonPathDependent(option, 10000);
             }
-        }
-
-        public double Price { get; private set; }
-        public void CalculateOptionPrice()
-        {
-            pricer.CalculateOptionPrice();
-            Price = pricer.Price;
+            pricer.CalculateOptionPrice(option);
         }
     }
 }

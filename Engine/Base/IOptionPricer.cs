@@ -2,8 +2,6 @@
 {
     public interface IOptionPricer
     {
-        double Price { get;  }
-
-        void CalculateOptionPrice();
+        void CalculateOptionPrice(IOption option);
     }
 }

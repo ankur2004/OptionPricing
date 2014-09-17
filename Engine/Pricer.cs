@@ -8,26 +8,26 @@ using OptionPricing.Engine.European;
 
 namespace OptionPricing.Engine
 {
-    public class Pricer : IOptionPricer
-    {
-        private IOptionPricer pricer;
+    //public class Pricer : IOptionPricer
+    //{
+    //    private IOptionPricer pricer;
 
-        public Pricer(IOption option)
-        {
-            if (option.OptionStyle == OptionStyle.European)
-            {
-                pricer = new BlackScholes(option);
-            }
-        }
+    //    public Pricer(Option option)
+    //    {
+    //        if (option.OptionStyle == OptionStyle.European)
+    //        {
+    //            pricer = new BlackScholes(option);
+    //        }
+    //    }
 
-        public double Price
-        {
-            get { return pricer.Price; }
-        }
+    //    public double Price
+    //    {
+    //        get { return pricer.Price; }
+    //    }
 
-        public void CalculateOptionPrice()
-        {
-            pricer.CalculateOptionPrice();
-        }
-    }
+    //    public void CalculateOptionPrice()
+    //    {
+    //        pricer.CalculateOptionPrice();
+    //    }
+    //}
 }
