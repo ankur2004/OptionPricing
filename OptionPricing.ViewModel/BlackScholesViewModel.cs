@@ -1,37 +1,35 @@
-﻿using OptionPricing.Engine;
+﻿using System.Linq;
+using OptionPricing.Engine;
 using OptionPricing.Engine.Base;
-using OptionPricing.Engine.European;
 using OptionPricing.ViewModel.Commands;
-using OptionPricing.ViewModel.Models;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace OptionPricing.ViewModel
 {
     public class BlackScholesViewModel : ViewModelBase
     {
-        ObservableCollection<OptionVM> options;
+        ObservableCollection<OptionViewModel> options;
+        
+
         public BlackScholesViewModel()
         {
-            options = new ObservableCollection<OptionVM>()
-            {
-                new OptionVM() {
+            options = new ObservableCollection<OptionViewModel>
+                      {
+                new OptionViewModel(new Option
+                {
                     Maturity = 0.5,
                     Rate = 0.09, 
                     SpotPrice = 39.03, 
                     ExercisePrice = 40.0, 
                     Volatility = 0.3
-                }
+                })
             };
 
         }
 
-        public ObservableCollection<OptionVM> Options
+        public ObservableCollection<OptionViewModel> Options
         {
             get
             {
@@ -48,30 +46,25 @@ namespace OptionPricing.ViewModel
 
         public ICommand CalculatePriceCommand
         {
-            get
-            {
-                if (calculatePriceCommand == null)
-                    calculatePriceCommand = new DelegateCommand(new Action(CalculatePriceExecuted), new Func<bool>(CalculatePriceExecute));
-
-                return calculatePriceCommand;
+            get {
+                return calculatePriceCommand ??
+                       (calculatePriceCommand =
+                           new DelegateCommand(CalculatePriceExecuted, CalculatePriceExecute));
             }
-
         }
 
         public bool CalculatePriceExecute()
         {
-
-            foreach (var option in Options)
-            {
-                IOptionPricer pricer = new Pricer(option);
-                pricer.CalculateOptionPrice();
-                option.OptionPrice = pricer.Price;
-            }
             return true;
         }
 
         public void CalculatePriceExecuted()
         {
+            foreach (var option in Options.Where(option => option.IsSelected))
+            {
+                option.PriceOption();
+            }
+            
         }
     }
 }
