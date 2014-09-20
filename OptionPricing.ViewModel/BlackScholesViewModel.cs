@@ -1,8 +1,6 @@
 ﻿using System.Linq;
-using OptionPricing.Engine;
 using OptionPricing.Engine.Base;
 using OptionPricing.ViewModel.Commands;
-using System;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 
@@ -11,7 +9,7 @@ namespace OptionPricing.ViewModel
     public class BlackScholesViewModel : ViewModelBase
     {
         ObservableCollection<OptionViewModel> options;
-        
+        private bool isSelected;
 
         public BlackScholesViewModel()
         {
@@ -29,6 +27,20 @@ namespace OptionPricing.ViewModel
 
         }
 
+        public bool IsSelected
+        {
+            get
+            {
+                isSelected = options.Where(x => x.IsSelected).Select(x => x.IsSelected).FirstOrDefault();
+                return isSelected;
+            }
+            set
+            {
+                isSelected = value; 
+                OnPropertyChanged("IsSelected");
+            }
+        }
+
         public ObservableCollection<OptionViewModel> Options
         {
             get
@@ -43,6 +55,28 @@ namespace OptionPricing.ViewModel
         }
 
         private DelegateCommand calculatePriceCommand;
+        private DelegateCommand isCheckedCommand;
+
+        public ICommand IsCheckedCommand
+        {
+            get
+            {
+                return isCheckedCommand ??
+                       (isCheckedCommand =
+                           new DelegateCommand(IsCheckedExecuted, IsCheckedExecute));
+            }
+        }
+
+        private bool IsCheckedExecute()
+        {
+            return true;
+        }
+
+        private void IsCheckedExecuted()
+        {
+            IsSelected = options.Where(x => x.IsSelected).Select(x => x.IsSelected).FirstOrDefault();
+        }
+
 
         public ICommand CalculatePriceCommand
         {

@@ -1,9 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
-using System.Runtime.CompilerServices;
 using OptionPricing.Engine.Base;
 using OptionPricing.Engine.European;
-using OptionPricing.ViewModel.Annotations;
 
 namespace OptionPricing.ViewModel
 {
@@ -164,12 +162,52 @@ namespace OptionPricing.ViewModel
 
         public string Error
         {
-            get { throw new NotImplementedException(); }
+            get
+            {
+                throw new NotImplementedException();
+            }
         }
 
         public string this[string columnName]
         {
-            get { throw new NotImplementedException(); }
+            get
+            {
+               string result = string.Empty;
+               switch (columnName)
+               {
+                   case "Rate":
+                       if (Rate == null)
+                       {
+                           result = "Rate is required";
+                       }
+                       break;
+                   case "Volatility":
+                       if (Volatility == null)
+                       {
+                           result = "Volatility is required";
+                       }
+                       break;
+                   case "ExercisePrice":
+                       if (ExercisePrice == null)
+                       {
+                           result = "Exercise Price is required";
+                       } 
+                       break;
+                   case "SpotPrice":
+                       if (SpotPrice == null)
+                       {
+                           result = "Spot Price is required";
+                       }
+                       break;
+                   case "TimeToMaturity":
+                       if (TimeToMaturity == null)
+                       {
+                           result = "Time To Maturity is required";
+                       }
+                       break;
+               };
+                return result;
+            }
         }
     }
 }

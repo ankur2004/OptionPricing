@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:OptionPricing.ViewModel;assembly=OptionPricing.ViewModel"  
              mc:Ignorable="d" 
+             x:Name="OptionGridControl"
              d:DesignHeight="300" d:DesignWidth="300">
     <UserControl.DataContext>
         <local:BlackScholesViewModel />
@@ -14,15 +15,35 @@
             <RowDefinition Height="60"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <Button VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10" Content="Price" Command="{Binding Path=CalculatePriceCommand}" Width="100" Height="30"></Button>
-        <DataGrid VerticalContentAlignment="Center" VerticalAlignment="Center" Grid.Row="1" AutoGenerateColumns="False" CanUserAddRows="True" CanUserDeleteRows="True" CanUserReorderColumns="True" ItemsSource="{Binding Options}">
+        <Button VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10" Content="Price" Command="{Binding Path=CalculatePriceCommand}" IsEnabled="{Binding IsSelected, Mode=TwoWay}" Width="100" Height="30"></Button>
+       
+         <DataGrid VerticalContentAlignment="Center" VerticalAlignment="Center" Grid.Row="1" AutoGenerateColumns="False" CanUserAddRows="True" CanUserDeleteRows="True" CanUserReorderColumns="True" ItemsSource="{Binding Options}">
+            <DataGrid.Resources>
+                <Style x:Key="ErrorStyle" TargetType="{x:Type TextBox}">
+                    <Setter Property="Padding" Value="1"/>
+                    <Style.Triggers>
+                        <Trigger Property="Validation.HasError" Value="True">
+                            <Setter Property="Background" Value="Red"/>
+                            <Setter Property="ToolTip" 
+                                 Value="{Binding RelativeSource={RelativeSource Self},
+                                 Path=(Validation.Errors)[0].ErrorContent}"/>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </DataGrid.Resources>
             <DataGrid.Columns>
-                <DataGridCheckBoxColumn Header="Select" Binding="{Binding IsSelected, Mode=TwoWay}"></DataGridCheckBoxColumn>
-                <DataGridTextColumn Header="Stock Price" IsReadOnly="False" Binding="{Binding Path=SpotPrice, Mode=TwoWay}"></DataGridTextColumn>
-                <DataGridTextColumn Header="Exercise Price" IsReadOnly="False" Binding="{Binding Path=ExercisePrice, Mode=TwoWay}"></DataGridTextColumn>
-                <DataGridTextColumn Header="Rate (%)" IsReadOnly="False" Binding="{Binding Path=Rate, Mode=TwoWay}"></DataGridTextColumn>
-                <DataGridTextColumn Header="Volatility (%)" IsReadOnly="False" Binding="{Binding Path=Volatility, Mode=TwoWay}"></DataGridTextColumn>
-                <DataGridTextColumn Header="Time To Maturity" IsReadOnly="False" Binding="{Binding Path=TimeToMaturity, Mode=TwoWay}"></DataGridTextColumn>
+                <DataGridTemplateColumn Header="Select">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <CheckBox HorizontalAlignment="Center" IsChecked="{Binding Path=IsSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Command="{Binding DataContext.IsCheckedCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}"></CheckBox>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTextColumn EditingElementStyle="{StaticResource ErrorStyle}" Header="Stock Price" IsReadOnly="False"  Binding="{Binding Path=SpotPrice, Mode=TwoWay, ValidatesOnDataErrors=True}"></DataGridTextColumn>
+                <DataGridTextColumn EditingElementStyle="{StaticResource ErrorStyle}" Header="Exercise Price" IsReadOnly="False" Binding="{Binding Path=ExercisePrice, Mode=TwoWay, ValidatesOnDataErrors=True}"></DataGridTextColumn>
+                <DataGridTextColumn EditingElementStyle="{StaticResource ErrorStyle}" Header="Rate (%)" IsReadOnly="False" Binding="{Binding Path=Rate, Mode=TwoWay, ValidatesOnDataErrors=True}"></DataGridTextColumn>
+                <DataGridTextColumn EditingElementStyle="{StaticResource ErrorStyle}" Header="Volatility (%)" IsReadOnly="False" Binding="{Binding Path=Volatility, Mode=TwoWay, ValidatesOnDataErrors=True}"></DataGridTextColumn>
+                <DataGridTextColumn EditingElementStyle="{StaticResource ErrorStyle}" Header="Time To Maturity" IsReadOnly="False" Binding="{Binding Path=TimeToMaturity, Mode=TwoWay, ValidatesOnDataErrors=True}"></DataGridTextColumn>
                 <DataGridTextColumn Header="Option Price" IsReadOnly="True" Binding="{Binding Path=Price}"></DataGridTextColumn>
                 <DataGridTemplateColumn>
                     <DataGridTemplateColumn.Header>Details</DataGridTemplateColumn.Header>
