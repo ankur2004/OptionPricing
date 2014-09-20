@@ -1,7 +1,9 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Windows.Input;
 using OptionPricing.Engine.Base;
 using OptionPricing.Engine.European;
+using OptionPricing.ViewModel.Commands;
 
 namespace OptionPricing.ViewModel
 {
@@ -160,6 +162,28 @@ namespace OptionPricing.ViewModel
             Price = option.Price;
         }
 
+        private DelegateCommand showGreeksCommand;
+
+        public ICommand ShowGreeksCommand
+        {
+            get
+            {
+                return showGreeksCommand ??
+                       (showGreeksCommand =
+                           new DelegateCommand(ShowGreeksExecuted, ShowGreeksExecute));
+            }
+        }
+
+        private bool ShowGreeksExecute()
+        {
+            return true;
+        }
+
+        private void ShowGreeksExecuted()
+        {
+            string result = "Test";
+        }
+
         public string Error
         {
             get
@@ -172,7 +196,7 @@ namespace OptionPricing.ViewModel
         {
             get
             {
-               string result = string.Empty;
+               var result = string.Empty;
                switch (columnName)
                {
                    case "Rate":

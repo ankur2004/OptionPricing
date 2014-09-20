@@ -4,9 +4,13 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:OptionPricing.ViewModel;assembly=OptionPricing.ViewModel"  
+             xmlns:converters="clr-namespace:OptionPricing.ViewModel.Converters;assembly=OptionPricing.ViewModel"
              mc:Ignorable="d" 
              x:Name="OptionGridControl"
              d:DesignHeight="300" d:DesignWidth="300">
+    <UserControl.Resources>
+        <converters:BooleanConverter x:Key="boolConverter"></converters:BooleanConverter>
+    </UserControl.Resources>
     <UserControl.DataContext>
         <local:BlackScholesViewModel />
     </UserControl.DataContext>
@@ -31,11 +35,20 @@
                     </Style.Triggers>
                 </Style>
             </DataGrid.Resources>
+             <DataGrid.RowDetailsTemplate>
+                <DataTemplate>
+                    <Border BorderThickness="2" Padding="5" CornerRadius="3" BorderBrush="#FF3FB825">
+                        <Grid>
+                            <TextBlock Text="Details"></TextBlock>
+                        </Grid>
+                    </Border>
+                </DataTemplate>
+             </DataGrid.RowDetailsTemplate>
             <DataGrid.Columns>
                 <DataGridTemplateColumn Header="Select">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <CheckBox HorizontalAlignment="Center" IsChecked="{Binding Path=IsSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Command="{Binding DataContext.IsCheckedCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}"></CheckBox>
+                            <CheckBox HorizontalAlignment="Center" IsChecked="{Binding Path=IsSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  Command="{Binding DataContext.IsCheckedCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}"></CheckBox>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
@@ -45,15 +58,9 @@
                 <DataGridTextColumn EditingElementStyle="{StaticResource ErrorStyle}" Header="Volatility (%)" IsReadOnly="False" Binding="{Binding Path=Volatility, Mode=TwoWay, ValidatesOnDataErrors=True}"></DataGridTextColumn>
                 <DataGridTextColumn EditingElementStyle="{StaticResource ErrorStyle}" Header="Time To Maturity" IsReadOnly="False" Binding="{Binding Path=TimeToMaturity, Mode=TwoWay, ValidatesOnDataErrors=True}"></DataGridTextColumn>
                 <DataGridTextColumn Header="Option Price" IsReadOnly="True" Binding="{Binding Path=Price}"></DataGridTextColumn>
-                <DataGridTemplateColumn>
-                    <DataGridTemplateColumn.Header>Details</DataGridTemplateColumn.Header>
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <Button Content="View Details..." Margin="5"></Button>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
             </DataGrid.Columns>
         </DataGrid>
+    
+          
     </Grid>
 </UserControl>
