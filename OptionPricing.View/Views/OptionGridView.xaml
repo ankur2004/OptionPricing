@@ -39,7 +39,18 @@
                 <DataTemplate>
                     <Border BorderThickness="2" Padding="5" CornerRadius="3" BorderBrush="#FF3FB825">
                         <Grid>
-                            <TextBlock Text="Details"></TextBlock>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="50"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="50"></RowDefinition>
+                                <RowDefinition Height="50"></RowDefinition>
+                            </Grid.RowDefinitions>
+                            <TextBlock Text="Delta"></TextBlock>
+                            <TextBlock Text="{Binding Delta, Mode=TwoWay}" Grid.Column="1"></TextBlock>
+                            <TextBlock Text="Gamma"></TextBlock>
+                            <TextBlock Text="{Binding Gamma, Mode=TwoWay}" Grid.Column="1"></TextBlock>
                         </Grid>
                     </Border>
                 </DataTemplate>
@@ -52,7 +63,7 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTextColumn EditingElementStyle="{StaticResource ErrorStyle}" Header="Stock Price" IsReadOnly="False"  Binding="{Binding Path=SpotPrice, Mode=TwoWay, ValidatesOnDataErrors=True}"></DataGridTextColumn>
+                <DataGridTextColumn EditingElementStyle="{StaticResource ErrorStyle}" Header="Stock Price" IsReadOnly="False"  Binding="{Binding Path=SpotPrice, ValidatesOnDataErrors=True}"></DataGridTextColumn>
                 <DataGridTextColumn EditingElementStyle="{StaticResource ErrorStyle}" Header="Exercise Price" IsReadOnly="False" Binding="{Binding Path=ExercisePrice, Mode=TwoWay, ValidatesOnDataErrors=True}"></DataGridTextColumn>
                 <DataGridTextColumn EditingElementStyle="{StaticResource ErrorStyle}" Header="Rate (%)" IsReadOnly="False" Binding="{Binding Path=Rate, Mode=TwoWay, ValidatesOnDataErrors=True}"></DataGridTextColumn>
                 <DataGridTextColumn EditingElementStyle="{StaticResource ErrorStyle}" Header="Volatility (%)" IsReadOnly="False" Binding="{Binding Path=Volatility, Mode=TwoWay, ValidatesOnDataErrors=True}"></DataGridTextColumn>

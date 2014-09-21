@@ -12,9 +12,9 @@ namespace OptionPricing.ViewModel
         private double optionPrice;
 
         bool isSelected;
-        double? timeToMaturity, rate, volatility, exercisePrice, spotPrice;
+        double? timeToMaturity, rate, volatility, exercisePrice, spotPrice, delta, gamma;
         private double price;
-        Option option; 
+        EuropeanOption option; 
         BlackScholes blackScholes;
 
         public OptionViewModel ()
@@ -24,7 +24,7 @@ namespace OptionPricing.ViewModel
             option = new EuropeanOption(OptionType.Call);
         }
 
-        public OptionViewModel(Option option)
+        public OptionViewModel(EuropeanOption option)
         {
             isSelected = false;
             this.option = option;
@@ -129,6 +129,28 @@ namespace OptionPricing.ViewModel
             }
         }
 
+        public double? Delta
+        {
+            get { return delta; }
+
+            set
+            {
+                delta = value;
+                OnPropertyChanged("Delta");
+            }
+        }
+
+        public double? Gamma
+        {
+            get { return gamma; }
+
+            set
+            {
+                gamma = value;
+                OnPropertyChanged("Gamma");
+            }
+        }
+
         public double Price
         {
             get { return price; }
@@ -160,6 +182,7 @@ namespace OptionPricing.ViewModel
 
             blackScholes.CalculateOptionPrice(option);
             Price = option.Price;
+            Delta = option.Delta;
         }
 
         private DelegateCommand showGreeksCommand;

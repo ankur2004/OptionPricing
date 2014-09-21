@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using OptionPricing.Engine.Base;
+using OptionPricing.Engine.European;
 using OptionPricing.ViewModel.Commands;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
@@ -15,7 +16,7 @@ namespace OptionPricing.ViewModel
         {
             options = new ObservableCollection<OptionViewModel>
                       {
-                new OptionViewModel(new Option
+                new OptionViewModel(new EuropeanOption(OptionType.Call)
                 {
                     Maturity = 0.5,
                     Rate = 0.09, 

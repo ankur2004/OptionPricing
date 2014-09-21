@@ -4,8 +4,8 @@
     {
         double Delta { get; }
         double Gamma { get; }
-        double Vega();
-        double Theta();
-        double Rho();
+        double Vega { get; }
+        double Theta { get; }
+        double Rho { get; }
     }
 }
