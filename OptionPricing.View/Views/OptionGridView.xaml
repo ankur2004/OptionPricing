@@ -46,11 +46,20 @@
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="50"></RowDefinition>
                                 <RowDefinition Height="50"></RowDefinition>
+                                <RowDefinition Height="50"></RowDefinition>
+                                <RowDefinition Height="50"></RowDefinition>
+                                <RowDefinition Height="50"></RowDefinition>
                             </Grid.RowDefinitions>
                             <TextBlock Text="Delta"></TextBlock>
                             <TextBlock Text="{Binding Delta, Mode=TwoWay}" Grid.Column="1"></TextBlock>
-                            <TextBlock Text="Gamma"></TextBlock>
-                            <TextBlock Text="{Binding Gamma, Mode=TwoWay}" Grid.Column="1"></TextBlock>
+                            <TextBlock Text="Gamma" Grid.Row="1"></TextBlock>
+                            <TextBlock Grid.Row="1" Text="{Binding Gamma, Mode=TwoWay}" Grid.Column="1"></TextBlock>
+                            <TextBlock Text="Theta" Grid.Row="2"></TextBlock>
+                            <TextBlock Grid.Row="2" Text="{Binding Theta, Mode=TwoWay}" Grid.Column="1"></TextBlock>
+                            <TextBlock Text="Rho" Grid.Row="3"></TextBlock>
+                            <TextBlock Grid.Row="3" Text="{Binding Rho, Mode=TwoWay}" Grid.Column="1"></TextBlock>
+                            <TextBlock Text="Vega" Grid.Row="4"></TextBlock>
+                            <TextBlock Grid.Row="4" Text="{Binding Vega, Mode=TwoWay}" Grid.Column="1"></TextBlock>
                         </Grid>
                     </Border>
                 </DataTemplate>
