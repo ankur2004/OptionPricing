@@ -39,7 +39,7 @@ namespace OptionPricing.ViewModel
             }
             set
             {
-                if (timeToMaturity != value && timeToMaturity != option.Maturity)
+                if (timeToMaturity != value)
                 {
                     option.Maturity = value;
                 }
@@ -56,7 +56,7 @@ namespace OptionPricing.ViewModel
             }
             set
             {
-                if (rate != value && rate != option.Rate)
+                if (rate != value)
                 {
                     option.Rate = value;
                 }
@@ -75,7 +75,7 @@ namespace OptionPricing.ViewModel
             set
             {
 
-                if (volatility != value && volatility != option.Volatility)
+                if (volatility != value)
                 {
                     option.Volatility = value;
                 }
@@ -94,7 +94,7 @@ namespace OptionPricing.ViewModel
             set
             {
 
-                if (exercisePrice != value && exercisePrice != option.ExercisePrice)
+                if (exercisePrice != value)
                 {
                     option.ExercisePrice = value;
                 }
@@ -111,7 +111,7 @@ namespace OptionPricing.ViewModel
             }
             set
             {
-                if (spotPrice != value && spotPrice != option.SpotPrice)
+                if (spotPrice != value)
                 {
                    option.SpotPrice = value;
                 }
@@ -175,6 +175,7 @@ namespace OptionPricing.ViewModel
             }
         }
 
+
         public double Price
         {
             get { return price; }
@@ -207,6 +208,7 @@ namespace OptionPricing.ViewModel
             blackScholes.CalculateOptionPrice(option);
             Price = option.Price;
             Delta = option.Delta;
+            Gamma = option.Gamma;
             Rho = option.Rho;
             Theta = option.Theta;
             Vega = option.Vega;

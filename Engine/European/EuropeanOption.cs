@@ -1,4 +1,5 @@
 ﻿using System;
+using MathNet.Numerics.Distributions;
 using OptionPricing.Engine.Base;
 
 namespace OptionPricing.Engine.European
@@ -86,11 +87,11 @@ namespace OptionPricing.Engine.European
                 {
                     case OptionType.Call:
                         result = (-SpotPrice.Value * Utils.NInv(d1) * Volatility.Value) / (2 * Math.Sqrt(Maturity.Value)) -
-                                    ExercisePrice.Value * Rate.Value * Math.Exp(-Rate.Value * Maturity.Value) * Utils.NInv(d2);
+                                    ExercisePrice.Value * Rate.Value * Math.Exp(-Rate.Value * Maturity.Value) * Utils.N(d2);
                         break;
                     case OptionType.Put:
                         result = (-SpotPrice.Value * Utils.NInv(d1) * Volatility.Value) / (2 * Math.Sqrt(Maturity.Value)) +
-                                    ExercisePrice.Value * Rate.Value * Math.Exp(-Rate.Value * Maturity.Value) * Utils.NInv(-d2);
+                                    ExercisePrice.Value * Rate.Value * Math.Exp(-Rate.Value * Maturity.Value) * Utils.N(-d2);
                         break;
                 }
                 return result;
@@ -109,14 +110,13 @@ namespace OptionPricing.Engine.European
 
 
                 var d2 = d1 - Volatility.Value * Math.Sqrt(Maturity.Value);
-
                 switch (OptionType)
                 {
                     case OptionType.Call:
-                        result = ExercisePrice.Value * Maturity.Value * Math.Exp(-Rate.Value * Maturity.Value) * Utils.NInv(d2);
+                        result = ExercisePrice.Value * Maturity.Value * Math.Exp(-Rate.Value * Maturity.Value) * Utils.N(d2);
                         break;
                     case OptionType.Put:
-                        result = -ExercisePrice.Value * Maturity.Value * Math.Exp(-Rate.Value * Maturity.Value) * Utils.NInv(-d2);
+                        result = -ExercisePrice.Value * Maturity.Value * Math.Exp(-Rate.Value * Maturity.Value) * Utils.N(-d2);
                         break;
                 }
 
