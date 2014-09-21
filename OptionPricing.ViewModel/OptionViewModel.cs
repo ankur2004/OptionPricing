@@ -35,18 +35,15 @@ namespace OptionPricing.ViewModel
         {
             get
             {
-                return option.Maturity ?? timeToMaturity;
+                return timeToMaturity ?? option.Maturity;
             }
             set
             {
-
-                if (option.Maturity == null)
+                if (timeToMaturity != value && timeToMaturity != option.Maturity)
                 {
                     option.Maturity = value;
                 }
 
-                timeToMaturity = option.Maturity;
-                
                 OnPropertyChanged("TimeToMaturity");
             }
         }
@@ -55,17 +52,15 @@ namespace OptionPricing.ViewModel
         {
             get
             {
-                return option.Rate ?? rate;
+                return rate ?? option.Rate;
             }
             set
             {
-
-                if (option.Rate == null)
+                if (rate != value && rate != option.Rate)
                 {
                     option.Rate = value;
                 }
-
-                rate = option.Rate;
+               
 
                 OnPropertyChanged("Rate");
             }
@@ -75,16 +70,15 @@ namespace OptionPricing.ViewModel
         {
             get
             {
-                return option.Volatility ?? volatility;
+                return volatility ?? option.Volatility;
             }
             set
             {
-                if (option.Volatility == null)
+
+                if (volatility != value && volatility != option.Volatility)
                 {
                     option.Volatility = value;
                 }
-
-                volatility = option.Volatility;
 
                 OnPropertyChanged("Volatility");
             }
@@ -95,16 +89,15 @@ namespace OptionPricing.ViewModel
         {
             get
             {
-                return option.ExercisePrice ?? exercisePrice;
+                return exercisePrice ?? option.ExercisePrice;
             }
             set
             {
-                if (option.ExercisePrice == null)
+
+                if (exercisePrice != value && exercisePrice != option.ExercisePrice)
                 {
                     option.ExercisePrice = value;
                 }
-
-                exercisePrice = option.ExercisePrice;
 
                 OnPropertyChanged("ExercisePrice");
             }
@@ -114,16 +107,14 @@ namespace OptionPricing.ViewModel
         {
             get
             {
-                return option.SpotPrice ?? spotPrice;
+                return spotPrice ?? option.SpotPrice;
             }
             set
             {
-                if (option.SpotPrice == null)
+                if (spotPrice != value && spotPrice != option.SpotPrice)
                 {
-                    option.SpotPrice = value;
+                   option.SpotPrice = value;
                 }
-
-                spotPrice = option.SpotPrice;
 
                 OnPropertyChanged("SpotPrice");
             }
