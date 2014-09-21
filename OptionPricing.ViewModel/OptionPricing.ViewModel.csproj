@@ -47,7 +47,7 @@
     <Compile Include="BlackScholesViewModel.cs" />
     <Compile Include="Commands\CommandReference.cs" />
     <Compile Include="Commands\DelegateCommand.cs" />
-    <Compile Include="Converters\BooleanConverter.cs" />
+    <Compile Include="Converters\DecimalToPercentageConverter.cs" />
     <Compile Include="OptionViewModel.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="ViewModelBase.cs" />

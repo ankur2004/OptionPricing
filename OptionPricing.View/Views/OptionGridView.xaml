@@ -5,11 +5,12 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:OptionPricing.ViewModel;assembly=OptionPricing.ViewModel"  
              xmlns:converters="clr-namespace:OptionPricing.ViewModel.Converters;assembly=OptionPricing.ViewModel"
+             xmlns:componentModel="clr-namespace:System.ComponentModel;assembly=System"
              mc:Ignorable="d" 
              x:Name="OptionGridControl"
              d:DesignHeight="300" d:DesignWidth="300">
     <UserControl.Resources>
-        <converters:BooleanConverter x:Key="boolConverter"></converters:BooleanConverter>
+        <converters:DecimalToPercentageConverter x:Key="decimalConverter"></converters:DecimalToPercentageConverter>
     </UserControl.Resources>
     <UserControl.DataContext>
         <local:BlackScholesViewModel />
@@ -74,8 +75,8 @@
                 </DataGridTemplateColumn>
                 <DataGridTextColumn EditingElementStyle="{StaticResource ErrorStyle}" Header="Stock Price" IsReadOnly="False"  Binding="{Binding Path=SpotPrice, ValidatesOnDataErrors=True}"></DataGridTextColumn>
                 <DataGridTextColumn EditingElementStyle="{StaticResource ErrorStyle}" Header="Exercise Price" IsReadOnly="False" Binding="{Binding Path=ExercisePrice, Mode=TwoWay, ValidatesOnDataErrors=True}"></DataGridTextColumn>
-                <DataGridTextColumn EditingElementStyle="{StaticResource ErrorStyle}" Header="Rate (%)" IsReadOnly="False" Binding="{Binding Path=Rate, Mode=TwoWay, ValidatesOnDataErrors=True}"></DataGridTextColumn>
-                <DataGridTextColumn EditingElementStyle="{StaticResource ErrorStyle}" Header="Volatility (%)" IsReadOnly="False" Binding="{Binding Path=Volatility, Mode=TwoWay, ValidatesOnDataErrors=True}"></DataGridTextColumn>
+                <DataGridTextColumn EditingElementStyle="{StaticResource ErrorStyle}" Header="Rate (%)" IsReadOnly="False" Binding="{Binding Path=Rate, Mode=TwoWay, ValidatesOnDataErrors=True, Converter={StaticResource decimalConverter}}"></DataGridTextColumn>
+                <DataGridTextColumn EditingElementStyle="{StaticResource ErrorStyle}" Header="Volatility (%)" IsReadOnly="False" Binding="{Binding Path=Volatility, Mode=TwoWay, ValidatesOnDataErrors=True,  Converter={StaticResource decimalConverter}}"></DataGridTextColumn>
                 <DataGridTextColumn EditingElementStyle="{StaticResource ErrorStyle}" Header="Time To Maturity" IsReadOnly="False" Binding="{Binding Path=TimeToMaturity, Mode=TwoWay, ValidatesOnDataErrors=True}"></DataGridTextColumn>
                 <DataGridTextColumn Header="Option Price" IsReadOnly="True" Binding="{Binding Path=Price}"></DataGridTextColumn>
             </DataGrid.Columns>
