@@ -22,7 +22,7 @@
         </Grid.RowDefinitions>
         <Button VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10" Content="Price" Command="{Binding Path=CalculatePriceCommand}" IsEnabled="{Binding IsSelected, Mode=TwoWay}" Width="100" Height="30"></Button>
        
-         <DataGrid VerticalContentAlignment="Center" VerticalAlignment="Center" Grid.Row="1" AutoGenerateColumns="False" CanUserAddRows="True" CanUserDeleteRows="True" CanUserReorderColumns="True" ItemsSource="{Binding Options}">
+         <DataGrid IsSynchronizedWithCurrentItem="True" RowDetailsVisibilityMode="VisibleWhenSelected" VerticalContentAlignment="Center" VerticalAlignment="Center" Grid.Row="1" AutoGenerateColumns="False" CanUserAddRows="True" CanUserDeleteRows="True" CanUserReorderColumns="True" ItemsSource="{Binding Options}">
             <DataGrid.Resources>
                 <Style x:Key="ErrorStyle" TargetType="{x:Type TextBox}">
                     <Setter Property="Padding" Value="1"/>
