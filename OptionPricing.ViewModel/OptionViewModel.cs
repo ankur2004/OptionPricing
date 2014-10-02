@@ -1,9 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
-using System.Windows.Input;
 using OptionPricing.Engine.Base;
 using OptionPricing.Engine.European;
-using OptionPricing.ViewModel.Commands;
 
 namespace OptionPricing.ViewModel
 {
@@ -13,6 +11,7 @@ namespace OptionPricing.ViewModel
 
         bool isSelected;
         double? timeToMaturity, rate, volatility, exercisePrice, spotPrice;
+        private double minSpotPrice, maxSpotPrice;
         private double price, delta, gamma, rho, theta, vega;
         EuropeanOption option; 
         BlackScholes blackScholes;
@@ -187,9 +186,7 @@ namespace OptionPricing.ViewModel
             }
         }
 
-       
-
-        public bool IsSelected
+       public bool IsSelected
         {
             get
             {
@@ -199,6 +196,40 @@ namespace OptionPricing.ViewModel
             {
                 isSelected = value;
                 OnPropertyChanged("IsSelected");
+            }
+        }
+
+        public double MinSpotPrice
+        {
+            get
+            {
+                if (SpotPrice == null)
+                {
+                    minSpotPrice = 0;
+                }
+                else
+                {
+                    minSpotPrice = SpotPrice.Value - 3 * SpotPrice.Value* Volatility.Value;
+                }
+
+                return minSpotPrice;
+            }
+        }
+
+        public double MaxSpotPrice
+        {
+            get
+            {
+                if (SpotPrice == null && Volatility == null)
+                {
+                    maxSpotPrice = 0;
+                }
+                else
+                {
+                    maxSpotPrice = 3 * SpotPrice.Value * Volatility.Value + SpotPrice.Value;
+                }
+
+                return maxSpotPrice;
             }
         }
 
@@ -214,27 +245,6 @@ namespace OptionPricing.ViewModel
             Vega = option.Vega;
         }
 
-        private DelegateCommand showGreeksCommand;
-
-        public ICommand ShowGreeksCommand
-        {
-            get
-            {
-                return showGreeksCommand ??
-                       (showGreeksCommand =
-                           new DelegateCommand(ShowGreeksExecuted, ShowGreeksExecute));
-            }
-        }
-
-        private bool ShowGreeksExecute()
-        {
-            return true;
-        }
-
-        private void ShowGreeksExecuted()
-        {
-            string result = "Test";
-        }
 
         public string Error
         {

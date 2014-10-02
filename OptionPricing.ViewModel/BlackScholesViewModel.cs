@@ -1,4 +1,6 @@
 ﻿using System.Linq;
+using System.Windows.Controls;
+using GalaSoft.MvvmLight.Command;
 using OptionPricing.Engine.Base;
 using OptionPricing.Engine.European;
 using OptionPricing.ViewModel.Commands;
@@ -14,6 +16,16 @@ namespace OptionPricing.ViewModel
 
         public BlackScholesViewModel()
         {
+            CellEditEndingCommand = new RelayCommand<DataGridCellEditEndingEventArgs>(
+                args =>
+                {
+                    if (args != null)
+                    {
+                        var c = args.EditAction;
+                    }
+                }
+
+                );
             options = new ObservableCollection<OptionViewModel>
                       {
                 new OptionViewModel(new EuropeanOption(OptionType.Call)
@@ -26,6 +38,11 @@ namespace OptionPricing.ViewModel
                 })
             };
 
+        }
+
+        private void DoSomething()
+        {
+            var test = "Hello";
         }
 
         public bool IsSelected
@@ -53,6 +70,12 @@ namespace OptionPricing.ViewModel
                 options = value;
                 OnPropertyChanged("Options");
             }
+        }
+
+        public RelayCommand<DataGridCellEditEndingEventArgs> CellEditEndingCommand
+        {
+            get; 
+            set;
         }
 
         private DelegateCommand calculatePriceCommand;
