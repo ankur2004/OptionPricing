@@ -88,11 +88,11 @@ namespace OptionPricing.Engine.European
             {
                 case OptionType.Call:
                     result = (-option.SpotPrice.Value * Utils.NInv(d1) * option.Volatility.Value) / (2 * Math.Sqrt(option.Maturity.Value)) -
-                                option.ExercisePrice.Value * option.Rate.Value * Math.Exp(-option.Rate.Value * option.Maturity.Value) * Utils.NInv(d2);
+                                option.ExercisePrice.Value * option.Rate.Value * Math.Exp(-option.Rate.Value * option.Maturity.Value) * Utils.N(d2);
                     break;
                 case OptionType.Put:
                     result = (-option.SpotPrice.Value * Utils.NInv(d1) * option.Volatility.Value) / (2 * Math.Sqrt(option.Maturity.Value)) +
-                                option.ExercisePrice.Value * option.Rate.Value * Math.Exp(-option.Rate.Value * option.Maturity.Value) * Utils.NInv(-d2);
+                                option.ExercisePrice.Value * option.Rate.Value * Math.Exp(-option.Rate.Value * option.Maturity.Value) * Utils.N(-d2);
                     break;
             }
             return result;

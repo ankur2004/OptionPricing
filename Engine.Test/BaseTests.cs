@@ -32,24 +32,25 @@ namespace OptionPricing.Engine.Test
         /// Calculate and validate delta using Finite Differences
         /// http://en.wikipedia.org/wiki/Finite_difference 
         /// </summary>
-        //[TestMethod]        
-        //public void TestBlackScholesEuropeanCallDelta()
-        //{
-        //    var blackScholes = new BlackScholes();
-        //    blackScholes.CalculateOptionPrice(testOption);
+        [TestMethod]
+        public void TestBlackScholesEuropeanCallDelta()
+        {
+            var blackScholes = new BlackScholes();
+            blackScholes.CalculateOptionPrice(testOption);
 
-        //    var p1 = testOption.Price;
-        //    var testOption2 = testOption.CloneWithBump(OptionInputs.Spot, 0.01);
+            var p1 = testOption.Price;
+            var testOption2 = testOption.CloneWithBump(OptionInputs.Spot, 0.01);
 
-        //    IOptionPricer blackScholes2 = new BlackScholes();
-        //    blackScholes2.CalculateOptionPrice(testOption2);
-        //    var p2 = testOption2.Price;
+            IOptionPricer blackScholes2 = new BlackScholes();
+            blackScholes2.CalculateOptionPrice(testOption2);
+            var p2 = testOption2.Price;
 
-        //    var deltaBS = blackScholes.GetDelta(testOption2);
-        //    var deltaFD = (p2 - p1)/0.01;
+            var deltaBS = blackScholes.GetDelta(testOption2);
+            var thetaBS = blackScholes.GethTheta(testOption2);
+            var deltaFD = (p2 - p1) / 0.01;
 
-        //    Assert.AreEqual(deltaBS, deltaFD, 0.01, "Delta");
-        //}
+            Assert.AreEqual(deltaBS, deltaFD, 0.01, "Delta");
+        }
 
 
         [TestMethod]
