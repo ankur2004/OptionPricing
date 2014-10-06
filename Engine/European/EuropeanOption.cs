@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using MathNet.Numerics.Distributions;
 using OptionPricing.Engine.Base;
 
 namespace OptionPricing.Engine.European
@@ -23,29 +20,108 @@ namespace OptionPricing.Engine.European
             }
         }
 
-        public double Delta()
+        public double Delta
         {
-            throw new NotImplementedException();
+            get
+            {
+                double result = 0;
+
+                if (SpotPrice == null || ExercisePrice == null || Volatility == null ||
+                   Rate == null || Maturity == null) return result;
+
+                var d1 = (Math.Log(SpotPrice.Value / ExercisePrice.Value) + (Rate.Value + (Math.Pow(Volatility.Value, 2) / 2)) * Maturity.Value) / (Volatility.Value * Math.Sqrt(Maturity.Value));
+
+                switch (OptionType)
+                {
+                    case OptionType.Call:
+                        result = Utils.N(d1);
+                        break;
+                    case OptionType.Put:
+                        result = Utils.N(d1) - 1;
+                        break;
+                }
+                return result;
+                
+            }
         }
 
-        public double Gamma()
+        public double Gamma
         {
-            throw new NotImplementedException();
+            get
+            {
+                if (SpotPrice == null || ExercisePrice == null || Volatility == null || Rate == null || Maturity == null) return 0;
+
+                var d1 = (Math.Log(SpotPrice.Value / ExercisePrice.Value) + (Rate.Value + (Math.Pow(Volatility.Value, 2) / 2)) * Maturity.Value) / (Volatility.Value * Math.Sqrt(Maturity.Value));
+
+                return Utils.NInv(d1) / (SpotPrice.Value * Volatility.Value * Math.Sqrt(Maturity.Value));
+            }
+           
         }
 
-        public double Vega()
+        public double Vega
         {
-            throw new NotImplementedException();
+            get
+            {
+                if (SpotPrice == null || ExercisePrice == null || Volatility == null || Rate == null || Maturity == null) return 0;
+
+                var d1 = (Math.Log(SpotPrice.Value / ExercisePrice.Value) + (Rate.Value + (Math.Pow(Volatility.Value, 2) / 2)) * Maturity.Value) / (Volatility.Value * Math.Sqrt(Maturity.Value));
+
+                return Utils.NInv(d1) * SpotPrice.Value * Math.Sqrt(Maturity.Value);
+            }
+           
         }
 
-        public double Theta()
+        public double Theta
         {
-            throw new NotImplementedException();
+            get
+            {
+
+                double result = 0;
+
+                if (SpotPrice == null || ExercisePrice == null || Volatility == null || Rate == null || Maturity == null) return 0;
+
+                var d1 = (Math.Log(SpotPrice.Value / ExercisePrice.Value) + (Rate.Value + (Math.Pow(Volatility.Value, 2) / 2)) * Maturity.Value) / (Volatility.Value * Math.Sqrt(Maturity.Value));
+                var d2 = d1 - Volatility.Value * Math.Sqrt(Maturity.Value);
+
+                switch (OptionType)
+                {
+                    case OptionType.Call:
+                        result = (-SpotPrice.Value * Utils.NInv(d1) * Volatility.Value) / (2 * Math.Sqrt(Maturity.Value)) -
+                                    ExercisePrice.Value * Rate.Value * Math.Exp(-Rate.Value * Maturity.Value) * Utils.N(d2);
+                        break;
+                    case OptionType.Put:
+                        result = (-SpotPrice.Value * Utils.NInv(d1) * Volatility.Value) / (2 * Math.Sqrt(Maturity.Value)) +
+                                    ExercisePrice.Value * Rate.Value * Math.Exp(-Rate.Value * Maturity.Value) * Utils.N(-d2);
+                        break;
+                }
+                return result;
+            }
         }
 
-        public double Rho()
+        public double Rho
         {
-            throw new NotImplementedException();
+            get
+            {
+                double result = 0;
+
+                if (SpotPrice == null || ExercisePrice == null || Volatility == null || Rate == null || Maturity == null) return result;
+
+                var d1 = (Math.Log(SpotPrice.Value / ExercisePrice.Value) + (Rate.Value + (Math.Pow(Volatility.Value, 2) / 2)) * Maturity.Value) / (Volatility.Value * Math.Sqrt(Maturity.Value));
+
+
+                var d2 = d1 - Volatility.Value * Math.Sqrt(Maturity.Value);
+                switch (OptionType)
+                {
+                    case OptionType.Call:
+                        result = ExercisePrice.Value * Maturity.Value * Math.Exp(-Rate.Value * Maturity.Value) * Utils.N(d2);
+                        break;
+                    case OptionType.Put:
+                        result = -ExercisePrice.Value * Maturity.Value * Math.Exp(-Rate.Value * Maturity.Value) * Utils.N(-d2);
+                        break;
+                }
+
+                return result;
+            }
         }
     }
 }

@@ -4,35 +4,110 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:OptionPricing.ViewModel;assembly=OptionPricing.ViewModel"  
+             xmlns:converters="clr-namespace:OptionPricing.ViewModel.Converters;assembly=OptionPricing.ViewModel"
+             xmlns:componentModel="clr-namespace:System.ComponentModel;assembly=System"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:command="http://www.galasoft.ch/mvvmlight"
              mc:Ignorable="d" 
+             x:Name="OptionGridControl"
              d:DesignHeight="300" d:DesignWidth="300">
+    <UserControl.Resources>
+        <converters:DecimalToPercentageConverter x:Key="decimalConverter"></converters:DecimalToPercentageConverter>
+    </UserControl.Resources>
     <UserControl.DataContext>
         <local:BlackScholesViewModel />
     </UserControl.DataContext>
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="60"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <Button VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10" Content="Price" Command="{Binding Path=CalculatePriceCommand}" Width="100" Height="30"></Button>
-        <DataGrid VerticalContentAlignment="Center" VerticalAlignment="Center" Grid.Row="1" AutoGenerateColumns="False" CanUserAddRows="True" CanUserDeleteRows="True" CanUserReorderColumns="True" ItemsSource="{Binding Options}">
+        <Button VerticalAlignment="Center" HorizontalAlignment="Left" Margin="2" Content="Price" Command="{Binding Path=CalculatePriceCommand}" IsEnabled="{Binding IsSelected, Mode=TwoWay}" Width="100" Height="30"></Button>
+       
+         <DataGrid  IsSynchronizedWithCurrentItem="True" RowDetailsVisibilityMode="VisibleWhenSelected" VerticalContentAlignment="Center"  Grid.Row="1" AutoGenerateColumns="False" CanUserAddRows="True" CanUserDeleteRows="True" CanUserReorderColumns="True" ItemsSource="{Binding Options}" BorderBrush="#CCFBFBFB">
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="CellEditEnding">
+                    <command:EventToCommand PassEventArgsToCommand="True" Command="{Binding CellEditEndingCommand}"></command:EventToCommand>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+             <DataGrid.Resources>
+                <Style x:Key="ErrorStyle" TargetType="{x:Type TextBox}">
+                    <Setter Property="Padding" Value="1"/>
+                    <Style.Triggers>
+                        <Trigger Property="Validation.HasError" Value="True">
+                            <Setter Property="Background" Value="Red"/>
+                            <Setter Property="ToolTip" 
+                                 Value="{Binding RelativeSource={RelativeSource Self},
+                                 Path=(Validation.Errors)[0].ErrorContent}"/>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </DataGrid.Resources>
+             <DataGrid.RowDetailsTemplate>
+                <DataTemplate>
+              <Grid Margin="5" Background="GhostWhite">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"></RowDefinition>
+                                <RowDefinition Height="50"></RowDefinition>
+                                <RowDefinition Height="50"></RowDefinition>
+                                <RowDefinition Height="50"></RowDefinition>
+                                <RowDefinition Height="50"></RowDefinition>
+                            </Grid.RowDefinitions>
+
+                        <Expander Background="White" HorizontalAlignment="Left" Header="Delta" ExpandDirection="Down"  Grid.ColumnSpan="2">
+                            <Grid Margin="10,4,0,0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition></ColumnDefinition>
+                                    <ColumnDefinition></ColumnDefinition>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="40"></RowDefinition>
+                                    <RowDefinition Height="40"></RowDefinition>
+                                </Grid.RowDefinitions>
+                                <TextBlock VerticalAlignment="Center" Margin="5,0,10,0"  Foreground="Black" Text="Delta"></TextBlock>
+                                <TextBlock VerticalAlignment="Center" Text="{Binding Delta, Mode=TwoWay}" Grid.Column="1" ></TextBlock>
+                                <TextBlock VerticalAlignment="Center" Margin="5,0,10,0" Foreground="Black" Text="Underlying Price" Grid.Row="1"></TextBlock>
+                                <Slider VerticalAlignment="Center" Grid.Row="1" Grid.Column="1" IsSnapToTickEnabled="True" AutoToolTipPlacement="BottomRight" Minimum="{Binding MinSpotPrice}" Maximum="{Binding MaxSpotPrice}" Value="{Binding Path=SpotPrice}" TickFrequency="1" >
+                                    <i:Interaction.Triggers>
+                                        <i:EventTrigger EventName="ValueChanged">
+                                            <command:EventToCommand PassEventArgsToCommand="True" Command="{Binding SpotPriceChangedCommand}"></command:EventToCommand>
+                                        </i:EventTrigger>
+                                    </i:Interaction.Triggers>
+                                </Slider>
+                            </Grid>
+                        </Expander>
+                            <TextBlock Foreground="Black" Text="Gamma" Grid.Row="1"></TextBlock>
+                            <TextBlock Foreground="Black" Grid.Row="1" Text="{Binding Gamma, Mode=TwoWay}" Grid.Column="1"></TextBlock>
+                            <TextBlock Foreground="Black" Text="Theta" Grid.Row="2"></TextBlock>
+                            <TextBlock Foreground="Black" Grid.Row="2" Text="{Binding Theta, Mode=TwoWay}" Grid.Column="1"></TextBlock>
+                            <TextBlock Foreground="Black" Text="Rho" Grid.Row="3"></TextBlock>
+                            <TextBlock Foreground="Black" Grid.Row="3" Text="{Binding Rho, Mode=TwoWay}" Grid.Column="1"></TextBlock>
+                            <TextBlock Foreground="Black" Text="Vega" Grid.Row="4"></TextBlock>
+                            <TextBlock Foreground="Black" Grid.Row="4" Text="{Binding Vega, Mode=TwoWay}" Grid.Column="1"></TextBlock>
+                        </Grid>
+                    </DataTemplate>
+             </DataGrid.RowDetailsTemplate>
             <DataGrid.Columns>
-                <DataGridCheckBoxColumn Header="Select" Binding="{Binding IsSelected, Mode=TwoWay}"></DataGridCheckBoxColumn>
-                <DataGridTextColumn Header="Stock Price" IsReadOnly="False" Binding="{Binding Path=SpotPrice, Mode=TwoWay}"></DataGridTextColumn>
-                <DataGridTextColumn Header="Exercise Price" IsReadOnly="False" Binding="{Binding Path=ExercisePrice, Mode=TwoWay}"></DataGridTextColumn>
-                <DataGridTextColumn Header="Rate (%)" IsReadOnly="False" Binding="{Binding Path=Rate, Mode=TwoWay}"></DataGridTextColumn>
-                <DataGridTextColumn Header="Volatility (%)" IsReadOnly="False" Binding="{Binding Path=Volatility, Mode=TwoWay}"></DataGridTextColumn>
-                <DataGridTextColumn Header="Time To Maturity" IsReadOnly="False" Binding="{Binding Path=TimeToMaturity, Mode=TwoWay}"></DataGridTextColumn>
-                <DataGridTextColumn Header="Option Price" IsReadOnly="True" Binding="{Binding Path=Price}"></DataGridTextColumn>
-                <DataGridTemplateColumn>
-                    <DataGridTemplateColumn.Header>Details</DataGridTemplateColumn.Header>
+                <DataGridTemplateColumn Header="Select">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Button Content="View Details..." Margin="5"></Button>
+                            <CheckBox HorizontalAlignment="Center" IsChecked="{Binding Path=IsSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  Command="{Binding DataContext.IsCheckedCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}"></CheckBox>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
+                <DataGridTextColumn EditingElementStyle="{StaticResource ErrorStyle}" Header="Stock Price" IsReadOnly="False"  Binding="{Binding Path=SpotPrice, ValidatesOnDataErrors=True}"></DataGridTextColumn>
+                <DataGridTextColumn EditingElementStyle="{StaticResource ErrorStyle}" Header="Exercise Price" IsReadOnly="False" Binding="{Binding Path=ExercisePrice, Mode=TwoWay, ValidatesOnDataErrors=True}"></DataGridTextColumn>
+                <DataGridTextColumn EditingElementStyle="{StaticResource ErrorStyle}" Header="Rate (%)" IsReadOnly="False" Binding="{Binding Path=Rate, Mode=TwoWay, ValidatesOnDataErrors=True, Converter={StaticResource decimalConverter}}"></DataGridTextColumn>
+                <DataGridTextColumn EditingElementStyle="{StaticResource ErrorStyle}" Header="Volatility (%)" IsReadOnly="False" Binding="{Binding Path=Volatility, Mode=TwoWay, ValidatesOnDataErrors=True,  Converter={StaticResource decimalConverter}}"></DataGridTextColumn>
+                <DataGridTextColumn EditingElementStyle="{StaticResource ErrorStyle}" Header="Time To Maturity" IsReadOnly="False" Binding="{Binding Path=TimeToMaturity, Mode=TwoWay, ValidatesOnDataErrors=True}"></DataGridTextColumn>
+                <DataGridTextColumn Header="Option Price" IsReadOnly="True" Binding="{Binding Path=Price}"></DataGridTextColumn>
             </DataGrid.Columns>
         </DataGrid>
+    
+          
     </Grid>
 </UserControl>

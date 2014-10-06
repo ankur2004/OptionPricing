@@ -1,8 +1,9 @@
 ﻿using System.Linq;
-using OptionPricing.Engine;
+using System.Windows.Controls;
+using GalaSoft.MvvmLight.Command;
 using OptionPricing.Engine.Base;
+using OptionPricing.Engine.European;
 using OptionPricing.ViewModel.Commands;
-using System;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 
@@ -11,13 +12,23 @@ namespace OptionPricing.ViewModel
     public class BlackScholesViewModel : ViewModelBase
     {
         ObservableCollection<OptionViewModel> options;
-        
+        private bool isSelected;
 
         public BlackScholesViewModel()
         {
+            CellEditEndingCommand = new RelayCommand<DataGridCellEditEndingEventArgs>(
+                args =>
+                {
+                    if (args != null)
+                    {
+                        var c = args.EditAction;
+                    }
+                }
+
+                );
             options = new ObservableCollection<OptionViewModel>
                       {
-                new OptionViewModel(new Option
+                new OptionViewModel(new EuropeanOption(OptionType.Call)
                 {
                     Maturity = 0.5,
                     Rate = 0.09, 
@@ -27,6 +38,25 @@ namespace OptionPricing.ViewModel
                 })
             };
 
+        }
+
+        private void DoSomething()
+        {
+            var test = "Hello";
+        }
+
+        public bool IsSelected
+        {
+            get
+            {
+                isSelected = options.Where(x => x.IsSelected).Select(x => x.IsSelected).FirstOrDefault();
+                return isSelected;
+            }
+            set
+            {
+                isSelected = value; 
+                OnPropertyChanged("IsSelected");
+            }
         }
 
         public ObservableCollection<OptionViewModel> Options
@@ -42,7 +72,35 @@ namespace OptionPricing.ViewModel
             }
         }
 
+        public RelayCommand<DataGridCellEditEndingEventArgs> CellEditEndingCommand
+        {
+            get; 
+            set;
+        }
+
         private DelegateCommand calculatePriceCommand;
+        private DelegateCommand isCheckedCommand;
+
+        public ICommand IsCheckedCommand
+        {
+            get
+            {
+                return isCheckedCommand ??
+                       (isCheckedCommand =
+                           new DelegateCommand(IsCheckedExecuted, IsCheckedExecute));
+            }
+        }
+
+        private bool IsCheckedExecute()
+        {
+            return true;
+        }
+
+        private void IsCheckedExecuted()
+        {
+            IsSelected = options.Where(x => x.IsSelected).Select(x => x.IsSelected).FirstOrDefault();
+        }
+
 
         public ICommand CalculatePriceCommand
         {

@@ -1,17 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace OptionPricing.Engine.Base
+﻿namespace OptionPricing.Engine.Base
 {
     interface IGreeks
     {
-        double Delta();
-        double Gamma();
-        double Vega();
-        double Theta();
-        double Rho();
+        double Delta { get; }
+        double Gamma { get; }
+        double Vega { get; }
+        double Theta { get; }
+        double Rho { get; }
     }
 }

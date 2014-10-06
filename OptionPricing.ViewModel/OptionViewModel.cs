@@ -1,9 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
-using System.Runtime.CompilerServices;
 using OptionPricing.Engine.Base;
 using OptionPricing.Engine.European;
-using OptionPricing.ViewModel.Annotations;
 
 namespace OptionPricing.ViewModel
 {
@@ -13,8 +11,9 @@ namespace OptionPricing.ViewModel
 
         bool isSelected;
         double? timeToMaturity, rate, volatility, exercisePrice, spotPrice;
-        private double price;
-        Option option; 
+        private double minSpotPrice, maxSpotPrice;
+        private double price, delta, gamma, rho, theta, vega;
+        EuropeanOption option; 
         BlackScholes blackScholes;
 
         public OptionViewModel ()
@@ -24,7 +23,7 @@ namespace OptionPricing.ViewModel
             option = new EuropeanOption(OptionType.Call);
         }
 
-        public OptionViewModel(Option option)
+        public OptionViewModel(EuropeanOption option)
         {
             isSelected = false;
             this.option = option;
@@ -35,18 +34,15 @@ namespace OptionPricing.ViewModel
         {
             get
             {
-                return option.Maturity ?? timeToMaturity;
+                return timeToMaturity ?? option.Maturity;
             }
             set
             {
-
-                if (option.Maturity == null)
+                if (timeToMaturity != value)
                 {
                     option.Maturity = value;
                 }
 
-                timeToMaturity = option.Maturity;
-                
                 OnPropertyChanged("TimeToMaturity");
             }
         }
@@ -55,17 +51,15 @@ namespace OptionPricing.ViewModel
         {
             get
             {
-                return option.Rate ?? rate;
+                return rate ?? option.Rate;
             }
             set
             {
-
-                if (option.Rate == null)
+                if (rate != value)
                 {
                     option.Rate = value;
                 }
-
-                rate = option.Rate;
+               
 
                 OnPropertyChanged("Rate");
             }
@@ -75,16 +69,15 @@ namespace OptionPricing.ViewModel
         {
             get
             {
-                return option.Volatility ?? volatility;
+                return volatility ?? option.Volatility;
             }
             set
             {
-                if (option.Volatility == null)
+
+                if (volatility != value)
                 {
                     option.Volatility = value;
                 }
-
-                volatility = option.Volatility;
 
                 OnPropertyChanged("Volatility");
             }
@@ -95,16 +88,15 @@ namespace OptionPricing.ViewModel
         {
             get
             {
-                return option.ExercisePrice ?? exercisePrice;
+                return exercisePrice ?? option.ExercisePrice;
             }
             set
             {
-                if (option.ExercisePrice == null)
+
+                if (exercisePrice != value)
                 {
                     option.ExercisePrice = value;
                 }
-
-                exercisePrice = option.ExercisePrice;
 
                 OnPropertyChanged("ExercisePrice");
             }
@@ -114,20 +106,74 @@ namespace OptionPricing.ViewModel
         {
             get
             {
-                return option.SpotPrice ?? spotPrice;
+                return spotPrice ?? option.SpotPrice;
             }
             set
             {
-                if (option.SpotPrice == null)
+                if (spotPrice != value)
                 {
-                    option.SpotPrice = value;
+                   option.SpotPrice = value;
                 }
-
-                spotPrice = option.SpotPrice;
 
                 OnPropertyChanged("SpotPrice");
             }
         }
+
+        public double Delta
+        {
+            get { return delta; }
+
+            set
+            {
+                delta = value;
+                OnPropertyChanged("Delta");
+            }
+        }
+
+        public double Gamma
+        {
+            get { return gamma; }
+
+            set
+            {
+                gamma = value;
+                OnPropertyChanged("Gamma");
+            }
+        }
+
+        public double Rho
+        {
+            get { return rho; }
+
+            set
+            {
+                rho = value;
+                OnPropertyChanged("Rho");
+            }
+        }
+
+        public double Theta
+        {
+            get { return theta; }
+
+            set
+            {
+                theta = value;
+                OnPropertyChanged("Theta");
+            }
+        }
+
+        public double Vega
+        {
+            get { return vega; }
+
+            set
+            {
+                vega = value;
+                OnPropertyChanged("Vega");
+            }
+        }
+
 
         public double Price
         {
@@ -140,9 +186,7 @@ namespace OptionPricing.ViewModel
             }
         }
 
-       
-
-        public bool IsSelected
+       public bool IsSelected
         {
             get
             {
@@ -155,21 +199,101 @@ namespace OptionPricing.ViewModel
             }
         }
 
+        public double MinSpotPrice
+        {
+            get
+            {
+                if (SpotPrice == null)
+                {
+                    minSpotPrice = 0;
+                }
+                else
+                {
+                    minSpotPrice = SpotPrice.Value - 3 * SpotPrice.Value* Volatility.Value;
+                }
+
+                return minSpotPrice;
+            }
+        }
+
+        public double MaxSpotPrice
+        {
+            get
+            {
+                if (SpotPrice == null && Volatility == null)
+                {
+                    maxSpotPrice = 0;
+                }
+                else
+                {
+                    maxSpotPrice = 3 * SpotPrice.Value * Volatility.Value + SpotPrice.Value;
+                }
+
+                return maxSpotPrice;
+            }
+        }
+
         public void PriceOption()
         {
 
             blackScholes.CalculateOptionPrice(option);
             Price = option.Price;
+            Delta = option.Delta;
+            Gamma = option.Gamma;
+            Rho = option.Rho;
+            Theta = option.Theta;
+            Vega = option.Vega;
         }
+
 
         public string Error
         {
-            get { throw new NotImplementedException(); }
+            get
+            {
+                throw new NotImplementedException();
+            }
         }
 
         public string this[string columnName]
         {
-            get { throw new NotImplementedException(); }
+            get
+            {
+               var result = string.Empty;
+               switch (columnName)
+               {
+                   case "Rate":
+                       if (Rate == null)
+                       {
+                           result = "Rate is required";
+                       }
+                       break;
+                   case "Volatility":
+                       if (Volatility == null)
+                       {
+                           result = "Volatility is required";
+                       }
+                       break;
+                   case "ExercisePrice":
+                       if (ExercisePrice == null)
+                       {
+                           result = "Exercise Price is required";
+                       } 
+                       break;
+                   case "SpotPrice":
+                       if (SpotPrice == null)
+                       {
+                           result = "Spot Price is required";
+                       }
+                       break;
+                   case "TimeToMaturity":
+                       if (TimeToMaturity == null)
+                       {
+                           result = "Time To Maturity is required";
+                       }
+                       break;
+               };
+                return result;
+            }
         }
     }
 }
